@@ -28,6 +28,7 @@ class ProcessManager
     public function addProcess(
         $processName,
         $commandName,
+        $secondsToSleepBeforeRestart,
         $commandArguments = array(),
         $commandOptions = array()
     ) {
@@ -43,7 +44,8 @@ class ProcessManager
             $process,
             $this->shell,
             $this->commandStringBuilder,
-            $this->phpExecutablePath
+            $this->phpExecutablePath,
+            $secondsToSleepBeforeRestart
         );
         
         $this->processes->add($watcherProcess);

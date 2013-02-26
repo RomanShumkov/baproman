@@ -15,14 +15,16 @@ class WatcherProcess implements ProcessInterface
         ProcessInterface $process,
         Shell $shell,
         ShellCommandStringBuilder $commandStringBuilder,
-        $phpExecutablePath
+        $phpExecutablePath,
+        $secondsToSleepBeforeRestart
     ) {
         $this->process = $process;
         $this->shell = $shell;
         $this->command = new Watcher(
             $phpExecutablePath,
             $process->getCommand(),
-            $commandStringBuilder
+            $commandStringBuilder,
+            $secondsToSleepBeforeRestart
         );
     }
     

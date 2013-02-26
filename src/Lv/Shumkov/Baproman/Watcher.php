@@ -11,14 +11,18 @@ class Watcher implements CommandInterface
 
     protected $shellCommandStringBuilder;
 
+    protected $secondsToSleepBeforeRestart;
+
     public function __construct(
         $phpExecutablePath,
         CommandInterface $command,
-        ShellCommandStringBuilder $shellCommandStringBuilder
+        ShellCommandStringBuilder $shellCommandStringBuilder,
+        $secondsToSleepBeforeRestart
     ) {
         $this->phpExecutablePath = $phpExecutablePath;
         $this->command = $command;
         $this->shellCommandStringBuilder = $shellCommandStringBuilder;
+        $this->secondsToSleepBeforeRestart = $secondsToSleepBeforeRestart;
     }
 
     public function getName()
@@ -35,8 +39,9 @@ class Watcher implements CommandInterface
     {
         return new ArrayObject(array(
             '-r' => sprintf(
-                "while (1) `%s`;",
-                $this->shellCommandStringBuilder->buildCommandString($this->command)
+                "while (1) { `%s`; sleep(%s); }",
+                $this->shellCommandStringBuilder->buildCommandString($this->command),
+                $this->secondsToSleepBeforeRestart
             )
         ));
     }
